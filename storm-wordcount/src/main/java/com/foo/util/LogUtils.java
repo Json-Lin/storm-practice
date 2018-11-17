@@ -9,7 +9,6 @@ import java.util.List;
 /**
  * @author JasonLin
  * @version V1.0
- * @date 2018/11/16
  */
 public class LogUtils {
 
@@ -25,10 +24,11 @@ public class LogUtils {
         HashMultimap<String, String> result = HashMultimap.create();
         for (String n : need) {
             String[] strs = n.split(splitPointStr);
+            String strs2 = strs[0].split("com.foo.bolt")[0].split("] \\[Thread")[1];
             if (strs.length > 1) {
-                result.put(strs[0], strs[1]);
+                result.put("[Thread" + strs2, strs[1]);
             } else {
-                result.put(strs[0], "");
+                result.put("[Thread" + strs2, "");
             }
         }
         for (String key : result.keySet()) {
@@ -37,7 +37,8 @@ public class LogUtils {
     }
 
     public static void main(String[] args) throws IOException {
-        sysoWordByWhatThread("D:\\work-count.log", "--word--", "--word--");
-        //sysoWordByWhatThread("D:\\work-count.log", "--sentence--", "--sentence--");
+        sysoWordByWhatThread("D:\\idea-workspace\\local\\logs\\storm-wordcount-2018-11-18.0.log", "--word--", "--word--");
+        sysoWordByWhatThread("D:\\idea-workspace\\local\\logs\\storm-wordcount-2018-11-18.0.log", "--sentence--", "--sentence--");
+        sysoWordByWhatThread("D:\\idea-workspace\\local\\logs\\storm-wordcount-2018-11-18.0.log", "--globalreport--", "--globalreport--");
     }
 }

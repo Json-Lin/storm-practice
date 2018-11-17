@@ -33,13 +33,13 @@ public class WordCountTopology {
         builder.setBolt(SPLIT_BOLT_ID, splitBolt,3) .shuffleGrouping(SENTENCE_SPOUT_ID);
 
         //splitBolt按照空格后分隔sentence为word，然后发射给countBolt
-        builder.setBolt(COUNT_BOLT_ID, countBolt, 6).fieldsGrouping(SPLIT_BOLT_ID, new Fields("word")).setNumTasks(4);
+        builder.setBolt(COUNT_BOLT_ID, countBolt, 3).fieldsGrouping(SPLIT_BOLT_ID, new Fields("word")).setNumTasks(6);
 
         // WordCountBolt --> ReportBolt
-        builder.setBolt(REPORT_BOLT_ID, reportBolt).globalGrouping(COUNT_BOLT_ID);
+        builder.setBolt(REPORT_BOLT_ID, reportBolt,2).globalGrouping(COUNT_BOLT_ID);
 
         Config config = new Config();
-        config.setNumWorkers(2);
+        config.setNumWorkers(1);
         LocalCluster cluster = new LocalCluster();
 
         cluster.submitTopology(TOPOLOGY_NAME, config, builder.createTopology());

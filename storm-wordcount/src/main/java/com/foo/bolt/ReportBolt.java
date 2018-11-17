@@ -1,5 +1,6 @@
 package com.foo.bolt;
 
+import org.apache.log4j.Logger;
 import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 
 public class ReportBolt extends BaseRichBolt {
+    private static final Logger LOGGER = Logger.getLogger(ReportBolt.class);
 
     private static final long serialVersionUID = -3973016696731250995L;
     private HashMap<String, Long> counts = null;
@@ -28,6 +30,7 @@ public class ReportBolt extends BaseRichBolt {
         String word = input.getStringByField("word");
         Long count = input.getLongByField("count");
         this.counts.put(word, count);
+        LOGGER.info("--globalreport--" + word);
     }
 
     @Override

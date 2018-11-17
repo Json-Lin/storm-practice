@@ -13,11 +13,11 @@ import java.util.concurrent.atomic.AtomicLong;
  * @version V1.0
  */
 public class SentenceEmitter {
-    private static volatile AtomicLong atomicLong = new AtomicLong(0);
+    private AtomicLong atomicLong = new AtomicLong(0);
 
     private final AtomicLongMap<String> CONUTS = AtomicLongMap.create();
 
-    private static final String[] SENTENCES = {"The logic for a realtime application is packaged into a Storm topology",
+    private final String[] SENTENCES = {"The logic for a realtime application is packaged into a Storm topology",
             " A Storm topology is analogous to a MapReduce job ",
             "One key difference is that a MapReduce job eventually finishes ",
             "whereas a topology runs forever or until you kill it of course ",
@@ -47,7 +47,7 @@ public class SentenceEmitter {
     }
 
     public void printCount() {
-        System.out.println("--- FINAL COUNTS ---");
+        System.out.println("--- Emitter COUNTS ---");
         List<String> keys = new ArrayList<String>();
         keys.addAll(CONUTS.asMap().keySet());
         Collections.sort(keys);

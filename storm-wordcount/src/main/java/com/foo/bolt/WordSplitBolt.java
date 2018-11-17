@@ -1,6 +1,6 @@
 package com.foo.bolt;
 
-import com.google.common.collect.Lists;
+import org.apache.log4j.Logger;
 import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
@@ -9,7 +9,6 @@ import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
 import org.apache.storm.tuple.Values;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +17,7 @@ import java.util.Map;
  */
 public class WordSplitBolt extends BaseRichBolt {
     private static final long serialVersionUID = 2932049413480818649L;
+    private static final Logger LOGGER = Logger.getLogger(WordSplitBolt.class);
     private OutputCollector collector;
 
     @Override
@@ -32,7 +32,7 @@ public class WordSplitBolt extends BaseRichBolt {
         for (String word : words) {
             collector.emit(new Values(word));
         }
-        System.out.println(Thread.currentThread().getName() + "--sentence--" + sentence);
+        LOGGER.info("--sentence--" + sentence);
     }
 
     @Override

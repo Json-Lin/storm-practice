@@ -1,5 +1,6 @@
 package com.foo.bolt;
 
+import org.apache.log4j.Logger;
 import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
@@ -17,6 +18,7 @@ import java.util.Map;
  */
 public class WordCountBolt extends BaseRichBolt {
     private static final long serialVersionUID = -7753338296650445257L;
+    private static final Logger LOGGER = Logger.getLogger(WordCountBolt.class);
     private OutputCollector collector;
     private HashMap<String, Long> counts = null;
 
@@ -36,7 +38,7 @@ public class WordCountBolt extends BaseRichBolt {
         count++;
         counts.put(word, count);
         collector.emit(new Values(word, count));
-        System.out.println(Thread.currentThread().getName() + "--word--" + word);
+        LOGGER.info("--word--" + word);
     }
 
     @Override
