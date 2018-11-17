@@ -1,6 +1,6 @@
 package com.foo.spout;
 
-import com.foo.source.WordEmitter;
+import com.foo.source.SentenceEmitter;
 import org.apache.storm.spout.SpoutOutputCollector;
 import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.OutputFieldsDeclarer;
@@ -13,23 +13,22 @@ import java.util.Map;
 /**
  * @author JasonLin
  * @version V1.0
- * @date 2018/11/13
  */
 public class SentenceSpout extends BaseRichSpout {
 
     private static final long serialVersionUID = -5335326175089829338L;
     private SpoutOutputCollector collector;
-    private WordEmitter wordEmitter;
+    private SentenceEmitter sentenceEmitter;
 
     @Override
     public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
         this.collector = collector;
-        this.wordEmitter = new WordEmitter();
+        this.sentenceEmitter = new SentenceEmitter();
     }
 
     @Override
     public void nextTuple() {
-        String word = wordEmitter.emit();
+        String word = sentenceEmitter.emit();
         collector.emit(new Values(word));
     }
 
@@ -41,6 +40,6 @@ public class SentenceSpout extends BaseRichSpout {
     @Override
     public void close() {
         super.close();
-        wordEmitter.printCount();
+        sentenceEmitter.printCount();
     }
 }

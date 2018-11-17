@@ -11,9 +11,8 @@ import java.util.concurrent.atomic.AtomicLong;
 /**
  * @author JasonLin
  * @version V1.0
- * @date 2018/11/13
  */
-public class WordEmitter {
+public class SentenceEmitter {
     private static volatile AtomicLong atomicLong = new AtomicLong(0);
 
     private final AtomicLongMap<String> CONUTS = AtomicLongMap.create();
@@ -63,10 +62,10 @@ public class WordEmitter {
     }
 
     public static void main(String[] args) {
-        WordEmitter wordEmitter = new WordEmitter();
+        SentenceEmitter sentenceEmitter = new SentenceEmitter();
         for (int i = 0; i < 20; i++) {
-            System.out.println(wordEmitter.emit());
+            System.out.println(sentenceEmitter.emit());
         }
-        wordEmitter.printCount();
+        sentenceEmitter.printCount();
     }
 }
