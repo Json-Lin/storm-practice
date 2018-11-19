@@ -10,7 +10,7 @@ import org.apache.storm.LocalCluster;
 import org.apache.storm.topology.TopologyBuilder;
 import org.apache.storm.tuple.Fields;
 
-public class WordCountTopology {
+public class GuaranteedWordCountTopology {
 
     private static final String SENTENCE_SPOUT_ID = "sentence-spout";
     private static final String SPLIT_BOLT_ID = "split-bolt";
@@ -33,17 +33,18 @@ public class WordCountTopology {
         builder.setBolt(SPLIT_BOLT_ID, splitBolt,3) .shuffleGrouping(SENTENCE_SPOUT_ID);
 
         //splitBolt按照空格后分隔sentence为word，然后发射给countBolt
-        builder.setBolt(COUNT_BOLT_ID, countBolt, 3).fieldsGrouping(SPLIT_BOLT_ID, new Fields("word")).setNumTasks(6);
+        builder.setBolt(COUNT_BOLT_ID, countBolt, 4).fieldsGrouping(SPLIT_BOLT_ID, new Fields("word"));
 
         // WordCountBolt --> ReportBolt
         builder.setBolt(REPORT_BOLT_ID, reportBolt,1).globalGrouping(COUNT_BOLT_ID);
 
         Config config = new Config();
         config.setNumWorkers(1);
+        config.setNumAckers(1);
         LocalCluster cluster = new LocalCluster();
 
         cluster.submitTopology(TOPOLOGY_NAME, config, builder.createTopology());
-        Thread.sleep(15*1000);
+        Thread.sleep(30*1000);
         cluster.killTopology(TOPOLOGY_NAME);
         cluster.shutdown();
     }
